@@ -22,8 +22,6 @@ class Dealer:
         self.bull_points = bull_points
 
     def simulate_game(self:Dealer,
-                      min:int,
-                      max:int,
                       turns:int,
                       size:int,
                       deck_size:int,
@@ -32,8 +30,6 @@ class Dealer:
                       order=None)->List(Tuple(int, int)):
         """
         Similulates a game and returns the players' scores
-        :param min: Int
-        :param max: Int
         :param turns: Int
         :param deck_size: Int
         :param size: Int, take stack if len(stack) == size
@@ -45,15 +41,13 @@ class Dealer:
 
         var = 0
         while not self.is_over():
-            self.simulate_round(min, max, turns, size, deck_size, bull_points, order)
+            self.simulate_round(turns, size, deck_size, bull_points, order)
             if rounds == var:
                 break
             else: var+=1
         return self.output_scores()
 
     def simulate_round(self:Dealer,
-                       min:int,
-                       max:int,
                        turns:int,
                        size:int,
                        deck_size:int,
@@ -70,7 +64,7 @@ class Dealer:
         :param order: float between 0 and 1
         :return: None
         """
-        self.create_deck(deck_size, min, max, bull_points, order)
+        self.create_deck(deck_size, bull_points, order)
         self.hand()
         stacks = self.create_stacks()
         for i in range(turns):
@@ -81,7 +75,7 @@ class Dealer:
                 self.bull_points[j]+=p
                 stacks = s
 
-    def create_deck(self:Dealer, deck_size:int, min:int, max:int, bull_points=None, order=None)->Void:
+    def create_deck(self:Dealer, deck_size:int, bull_points=None, order=None)->Void:
         """
         :param deck_size: Int, number of cards in deck
         :param min: Int, minimum number of bull points
@@ -92,10 +86,8 @@ class Dealer:
         """
         seed(bull_points)
         cards = []
-        if min >= max:
-            raise ValueError('min less than max')
         for i in range(deck_size):
-            cards.append((i+1, randrange(min, max)))
+            cards.append((i+1, randrange(min_val, max_val)))
         s = (order or random())
         shuffle(cards, lambda: s)
         self.deck = cards

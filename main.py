@@ -39,9 +39,7 @@ def main()->Void:
 
         players = generate_players(num)
         dealer = generate_dealer(players)
-        print("scores: %s" % dealer.simulate_game(3,
-                                                  8,
-                                                  turns,
+        print("scores: %s" % dealer.simulate_game(turns,
                                                   6,
                                                   cards_per_game,
                                                   order=.5,
