@@ -3,6 +3,9 @@ from copy import deepcopy
 from player import Player
 from retic import List, Void, Tuple, Bool
 
+min_val = 2
+max_val = 7
+
 class Dealer:
     """
     To represent the Dealer for the whole game
@@ -108,12 +111,12 @@ class Dealer:
             player.take_hand(hand)
             del self.deck[:10]
 
-    def create_stacks(self:Dealer):
+    def create_stacks(self:Dealer)->(List(List(Tuple(int, int)))):
         """
         create 4 new stacks each having 1 card from the deck
         at the start of every round
         Initialize all players with that stack
-        :return: [Tuple ...]
+        :return: [[Tuple] ...]
         """
         stacks = []
         for i in range(4):
