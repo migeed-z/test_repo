@@ -4,7 +4,7 @@ class Player:
     """
     To represent a player in the game
     """
-    def __init__(self:Player, name:int, cards:List(Tuple(int,int)), strat)->Void:
+    def __init__(self:Player, name:int, cards:List(Tuple(int,int)))->Void:
         """
         :param name: Int
         :param cards: [Tuple...]
@@ -12,7 +12,6 @@ class Player:
         :return: Player
         """
         self.name = name
-        self.strat = strat
         self.cards = cards
 
     def discard(self:Player)->int:
@@ -21,7 +20,7 @@ class Player:
         :return: Int
         """
         face_values = list(map(lambda card: card[0], self.cards))
-        discarded_index = face_values.index(self.strat(face_values))
+        discarded_index = face_values.index(max(face_values))
         return discarded_index
 
     def choose_correct_stack(self:Player, stacks:List(List(Tuple(int,int))))->int:

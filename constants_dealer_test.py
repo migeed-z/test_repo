@@ -9,9 +9,9 @@ min_range = 2
 max_range = 8
 strat = max
 
-player0 = Player(0, [], strat)
-player1 = Player(1, [], strat)
-player2 = Player(2, [], strat)
+player0 = Player(0, [])
+player1 = Player(1, [])
+player2 = Player(2, [])
 
 dealer1 = Dealer([player0, player1, player2], [0, 0, 0])
 

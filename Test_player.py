@@ -14,15 +14,6 @@ class TestPlayer(unittest.TestCase):
         index = c.player1.choose_correct_stack(c.stacks1)
         self.assertEqual(index, 0)
 
-    def test_choose_correct_stack(self):
-        index = c.player1.choose_correct_stack(c.stacks1)
-        self.assertEqual(index, 0)
-
-    def test_choose_correct_stack(self):
-        index = c.player3.choose_correct_stack(c.stacks1)
-        self.assertEqual(index, 0)
-
-
     def test_discard(self):
         self.assertEqual(c.player1.discard(), 2)
 

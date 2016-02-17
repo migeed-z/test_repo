@@ -39,15 +39,13 @@ class TestDealer(unittest.TestCase):
                          c.dealer1.output_scores())
 
     def test_simulate_round(self):
-        c.dealer1.simulate_round(c.min_range, c.max_range, 10, c.stack_size, c.deck_size, 1, .5)
+        c.dealer1.simulate_round(10, c.stack_size, c.deck_size, 1, .5)
         scores = c.dealer1.output_scores()
         self.assertEquals(scores, [(0, 25), (1, 21), (2, 43)])
 
 
     def test_simulate_game(self):
-        scores = c.dealer3.simulate_game(c.min_range,
-                                         c.max_range,
-                                         10,
+        scores = c.dealer3.simulate_game(10,
                                          c.stack_size,
                                          c.deck_size,
                                          None,

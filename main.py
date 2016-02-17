@@ -1,7 +1,6 @@
 from player import Player
 from dealer import Dealer
-from random import choice
-from retic import Void,List,Tuple
+from retic import Void,List
 
 def generate_dealer(players:List(Player))->Dealer:
     """
@@ -17,16 +16,15 @@ def generate_players(num_players:int)->List(Player):
     :param num_players: int
     :return: [Players...]
     """
-    strats_list = [min, max]
     players = []
     for i in range(num_players):
-        players.append(Player(i, [], choice(strats_list)))
+        players.append(Player(i, []))
     return players
 
 def main()->Void:
     try:
         num = int(input('Input:'))
-        turns = 9
+        turns = 10
         cards_per_player = 10
         cards_per_game = 210
 
@@ -40,10 +38,22 @@ def main()->Void:
         players = generate_players(num)
         dealer = generate_dealer(players)
         print("scores: %s" % dealer.simulate_game(turns,
-                                                  6,
+                                                  5,
                                                   cards_per_game,
                                                   order=.5,
                                                   bull_points=.5))
+
+
+    # def simulate_game(self:Dealer,
+    #                   turns:int,
+    #                   size:int,
+    #                   deck_size:int,
+    #                   rounds=None,
+    #                   bull_points=None,
+    #                   order=None)->List(Tuple(int, int)):
+
+
+
     except ValueError:
         print("Not a number")
 main()

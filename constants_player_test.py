@@ -21,9 +21,9 @@ card12 = (12, 4)
 cards1 = [card1, card2, card3]
 cards2 = [card1, card11, card12]
 
-player1 = Player(1, cards1, strat)
-player2 = Player(2, cards2, strat)
-player3 = Player(3, [card1], strat)
+player1 = Player(1, cards1)
+player2 = Player(2, cards2)
+player3 = Player(3, [card1])
 
 stack1 = [card1, card2]
 stack2 = [card3, card4]
