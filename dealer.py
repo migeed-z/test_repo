@@ -25,9 +25,9 @@ class Dealer:
                       turns:int,
                       size:int,
                       deck_size:int,
-                      rounds=None,
-                      bull_points=None,
-                      order=None)->List(Tuple(int, int)):
+                      rounds:int,
+                      bull_points:float,
+                      order:float)->List(Tuple(int, int)):
         """
         Similulates a game and returns the players' scores
         :param turns: Int
@@ -51,8 +51,8 @@ class Dealer:
                        turns:int,
                        size:int,
                        deck_size:int,
-                       bull_points=None,
-                       order=None)->Void:
+                       bull_points,
+                       order)->Void:
         """
         Simulates a complete round of 10 turns
         :param min: Int
@@ -75,7 +75,7 @@ class Dealer:
                 self.bull_points[j]+=p
                 stacks = s
 
-    def create_deck(self:Dealer, deck_size:int, bull_points=None, order=None)->Void:
+    def create_deck(self:Dealer, deck_size:int, bull_points:float, order:float)->Void:
         """
         :param deck_size: Int, number of cards in deck
         :param min: Int, minimum number of bull points

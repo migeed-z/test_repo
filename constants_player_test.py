@@ -2,8 +2,6 @@ from player import Player
 
 #params
 stack_size = 5
-strat = max
-
 
 card1 = (1, 2)
 card2 = (2, 3)
