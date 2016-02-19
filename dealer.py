@@ -51,8 +51,8 @@ class Dealer:
                        turns:int,
                        size:int,
                        deck_size:int,
-                       bull_points,
-                       order)->Void:
+                       bull_points:float,
+                       order:float)->Void:
         """
         Simulates a complete round of 10 turns
         :param min: Int
