@@ -1,7 +1,9 @@
 from random import randrange, shuffle, random, seed
 from copy import deepcopy
-from player import Player
+
 from retic import List, Void, Tuple, Bool
+
+from player import Player
 
 min_val = 2
 max_val = 7

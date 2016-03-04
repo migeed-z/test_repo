@@ -1,6 +1,8 @@
+from retic import Void,List
+
+from benchmark_tools.Timer import Timer
 from player import Player
 from dealer import Dealer
-from retic import Void,List
 
 
 def generate_dealer(players:List(Player))->Dealer:
@@ -44,4 +46,7 @@ def main()->Void:
                                               10,
                                               .5,
                                               .5))
-main()
+t = Timer()
+with t:
+    main()
+
