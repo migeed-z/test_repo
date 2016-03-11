@@ -1,5 +1,4 @@
 from retic import Void,List
-
 from benchmark_tools.Timer import Timer
 from player import Player
 from dealer import Dealer
