@@ -7,22 +7,22 @@ min_val = 2
 max_val = 7
 turns = 10
 stack_size = 5
-deck_size = 210
 
 class Dealer:
     """
     To represent the Dealer for the whole game
     """
 
-    def __init__(self:Dealer, players:List(Player), bull_points:List(int))->Void:
+    def __init__(self:Dealer, players:List(Player), bull_points:List(int), cards_per_game:int)->Void:
         """
         :param deck: [Card ...]
         :param players: [Player ...]
         :param bull_points: [Int ...]
         """
-        self.deck = self.create_deck()
+        self.deck = self.create_deck(cards_per_game)
         self.players = players
         self.bull_points = bull_points
+        self.cards_per_game = cards_per_game
 
     def simulate_game(self:Dealer)->List(Tuple(int, int)):
         """
@@ -49,7 +49,7 @@ class Dealer:
                 stacks = s
 
     #Problem: if you change return type to Tuple(int), it will pass guarded check and not pass transient.
-    def create_deck(self:Dealer, deck_size:int = deck_size, bull_points:float = .5, order:float = .5)->List(Tuple(int, int)):
+    def create_deck(self:Dealer, deck_size, bull_points:float = .5, order:float = .5)->List(Tuple(int, int)):
         """
         :param deck_size: Int, number of cards in deck
         :param min: Int, minimum number of bull points
@@ -73,9 +73,8 @@ class Dealer:
         :return: None
         """
         for i, player in enumerate(self.players):
-            #hand = self.deck[:i+1*10]
             hand = []
-            for i in range(i+1 * 10, i + 2 * 10):
+            for i in range(0, i + 1 * 10):
                 hand.append(self.deck[i])
             player.take_hand(hand)
 
