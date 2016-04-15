@@ -1,12 +1,13 @@
 from random import randrange, shuffle, random, seed
 from copy import deepcopy
-
 from retic import List, Void, Tuple, Bool
-
 from player import Player
 
 min_val = 2
 max_val = 7
+turns = 10
+stack_size = 5
+deck_size = 210
 
 class Dealer:
     """
@@ -19,65 +20,36 @@ class Dealer:
         :param players: [Player ...]
         :param bull_points: [Int ...]
         """
-        self.deck = []
+        self.deck = self.create_deck()
         self.players = players
         self.bull_points = bull_points
 
-    def simulate_game(self:Dealer,
-                      turns:int,
-                      size:int,
-                      deck_size:int,
-                      rounds:int,
-                      bull_points:float,
-                      order:float)->List(Tuple(int, int)):
+    def simulate_game(self:Dealer)->List(Tuple(int, int)):
         """
         Similulates a game and returns the players' scores
-        :param turns: Int
-        :param deck_size: Int
-        :param size: Int, take stack if len(stack) == size
-        :param rounds: Int or None
-        :param bull_points: float
-        :param order: float between 0 and 1
         :return: [Tuple ...]
         """
-
-        var = 0
         while not self.is_over():
-            self.simulate_round(turns, size, deck_size, bull_points, order)
-            if rounds == var:
-                break
-            else: var+=1
+            self.simulate_round()
         return self.output_scores()
 
-    def simulate_round(self:Dealer,
-                       turns:int,
-                       size:int,
-                       deck_size:int,
-                       bull_points,
-                       order)->Void:
+    def simulate_round(self:Dealer)->Void:
         """
         Simulates a complete round of 10 turns
-        :param min: Int
-        :param max: Int
-        :param turns: Int
-        :param deck_size: Int
-        :param size: Int, take stack if len(stack) == size
-        :param bull_points: float
-        :param order: float between 0 and 1
         :return: None
         """
-        self.create_deck(deck_size, bull_points, order)
         self.hand()
         stacks = self.create_stacks()
         for i in range(turns):
             for j in range(len(self.players)):
                 player = self.players[j]
                 chosen_stack_index = player.choose_correct_stack(stacks)
-                (p, s) = self.update_game(player, chosen_stack_index, stacks, size)
+                (p, s) = self.update_game(player, chosen_stack_index, stacks)
                 self.bull_points[j]+=p
                 stacks = s
 
-    def create_deck(self:Dealer, deck_size:int, bull_points:float, order:float)->Void:
+    #Problem: if you change return type to Tuple(int), it will pass guarded check and not pass transient.
+    def create_deck(self:Dealer, deck_size:int = deck_size, bull_points:float = .5, order:float = .5)->List(Tuple(int, int)):
         """
         :param deck_size: Int, number of cards in deck
         :param min: Int, minimum number of bull points
@@ -92,7 +64,7 @@ class Dealer:
             cards.append((i+1, randrange(min_val, max_val)))
         s = (order or random())
         shuffle(cards, lambda: s)
-        self.deck = cards
+        return cards
 
     def hand(self:Dealer)->Void:
         """
@@ -100,10 +72,12 @@ class Dealer:
         accordingly
         :return: None
         """
-        for player in self.players:
-            hand = self.deck[:10]
+        for i, player in enumerate(self.players):
+            #hand = self.deck[:i+1*10]
+            hand = []
+            for i in range(i+1 * 10, i + 2 * 10):
+                hand.append(self.deck[i])
             player.take_hand(hand)
-            del self.deck[:10]
 
     def create_stacks(self:Dealer)->(List(List(Tuple(int, int)))):
         """
@@ -137,13 +111,12 @@ class Dealer:
             res.append((player_name, player_points))
         return res
 
-    def update_game(self:Dealer, player:Player, stack_index:int, stacks:List(List(Tuple(int, int))), size:int)->\
+    def update_game(self:Dealer, player:Player, stack_index:int, stacks:List(List(Tuple(int, int))))->\
             Tuple(int, List(List(Tuple(int, int)))):
         """
         update playe's bull points based on chosen stack
         :param stack_index: Int
         :param stacks: [[Tuple...]...] where len(stacks)=4
-        :param size: Int, take stack if len(stack) == size
         :return: Tuple
         """
         top_cards = list(map(lambda stack: stack[-1], stacks))
@@ -158,7 +131,7 @@ class Dealer:
 
         else:
             my_stack = stacks[stack_index]
-            if len(my_stack) == size:
+            if len(my_stack) == stack_size:
                 bull_points = self.get_sum(my_stack)
                 new_stacks = self.replace_card(discarded, stack_index, stacks)
                 return (bull_points, new_stacks)

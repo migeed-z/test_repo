@@ -26,9 +26,7 @@ def generate_players(num_players:int)->List(Player):
 def main()->Void:
 
     num = 3 #number of players
-    turns = 10 #number of turns to play the game
     cards_per_player = 10
-    cards_per_game = 210 #size of deck
 
     if num < 2:
         print('Too few players!')
@@ -39,12 +37,7 @@ def main()->Void:
 
     players = generate_players(num)
     dealer = generate_dealer(players)
-    print("scores: %s" % dealer.simulate_game(turns,
-                                              5,
-                                              cards_per_game,
-                                              10,
-                                              .5,
-                                              .5))
+    print("scores: %s" % dealer.simulate_game())
 t = Timer()
 with t:
     main()
