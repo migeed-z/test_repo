@@ -5,7 +5,7 @@ from benchmark_tools.Runner import run_all
 
 if os.path.exists('typed'):
     gen_all('typed')
-    run_all('.',
+    run_all('./Benchmark',
             './Test',
             './output.py')
 else:
