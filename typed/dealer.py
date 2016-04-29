@@ -29,24 +29,26 @@ class Dealer:
         Similulates a game and returns the players' scores
         :return: [Tuple ...]
         """
-        while not self.is_over():
-            self.simulate_round()
+        while not max(self.bull_points) >= 66:
+
+            #hand cards
+            for i, player in enumerate(self.players):
+                hand = []
+                for i in range(0, i + 1 * 10):
+                    hand.append(self.deck[i])
+                player.cards = hand
+
+
+            stacks = self.create_stacks()
+            for i in range(turns):
+                for j in range(len(self.players)):
+                    player = self.players[j]
+                    chosen_stack_index = player.choose_correct_stack(stacks)
+                    (p, s) = self.update_game(player, chosen_stack_index, stacks)
+                    self.bull_points[j]+=p
+                    stacks = s
         return self.output_scores()
 
-    def simulate_round(self:Dealer)->Void:
-        """
-        Simulates a complete round of 10 turns
-        :return: None
-        """
-        self.hand()
-        stacks = self.create_stacks()
-        for i in range(turns):
-            for j in range(len(self.players)):
-                player = self.players[j]
-                chosen_stack_index = player.choose_correct_stack(stacks)
-                (p, s) = self.update_game(player, chosen_stack_index, stacks)
-                self.bull_points[j]+=p
-                stacks = s
 
     #Problem: if you change return type to Tuple(int), it will pass guarded check and not pass transient.
     def create_deck(self:Dealer, deck_size, bull_points:float = .5, order:float = .5)->List(Tuple(int, int)):
@@ -66,17 +68,6 @@ class Dealer:
         shuffle(cards, lambda: s)
         return cards
 
-    def hand(self:Dealer)->Void:
-        """
-        Hand cards to players and update deck and players' cards
-        accordingly
-        :return: None
-        """
-        for i, player in enumerate(self.players):
-            hand = []
-            for i in range(0, i + 1 * 10):
-                hand.append(self.deck[i])
-            player.take_hand(hand)
 
     def create_stacks(self:Dealer)->(List(List(Tuple(int, int)))):
         """
@@ -89,13 +80,6 @@ class Dealer:
         for i in range(4):
             stacks.append([self.deck.pop()])
         return stacks
-
-    def is_over(self:Dealer)->Bool:
-        """
-        Is the game over?
-        :return: Boolean
-        """
-        return max(self.bull_points) >= 66
 
     def output_scores(self:Dealer)->List(Tuple(int, int)):
         """
@@ -123,29 +107,22 @@ class Dealer:
         discarded = player.cards.pop(discarded_index)
 
         if discarded[0] < min(list(map(lambda card: card[0], top_cards))):
-            bull_points = self.get_sum(stacks[stack_index])
-
+            bull_points = sum(list(map(lambda card: card[1], stacks[stack_index])))
             new_stacks = self.replace_card(discarded, stack_index, stacks)
             return bull_points, new_stacks
 
         else:
             my_stack = stacks[stack_index]
             if len(my_stack) == stack_size:
-                bull_points = self.get_sum(my_stack)
+                bull_points = sum(list(map(lambda card: card[1], my_stack)))
                 new_stacks = self.replace_card(discarded, stack_index, stacks)
                 return (bull_points, new_stacks)
             else:
-                new_stacks = self.add_card(discarded, stack_index, stacks)
+                new_stacks = deepcopy(stacks)
+                new_stacks[stack_index].append(discarded)
+
                 return 0, new_stacks
 
-    def get_sum(self:Dealer, stack:List(Tuple(int, int)))->int:
-        """
-        returns the player's bull points per turn
-        :param stack: [Tuples ...]
-        :return Int
-        """
-        bull_points = sum(list(map(lambda card: card[1], stack)))
-        return bull_points
 
     def replace_card(self:Dealer, card:Tuple(int, int), index:int, stacks:List(List(Tuple(int, int))))->List(List(Tuple(int, int))):
         """
@@ -159,25 +136,3 @@ class Dealer:
         new_stacks[index] = [card]
         return new_stacks
 
-    def sum_stacks(self:Dealer, stacks:List(List(Tuple(int, int))))->List(int):
-        """
-        Sums the bull points of stacks
-        :param stacks [[Tuple ...] ...] where len(stacks)=4
-        :return: [Int, ...]
-        """
-        sums = []
-        for stack in stacks:
-            bull_points = list(map(lambda card: card[1], stack))
-            sums.append(sum(bull_points))
-        return sums
-
-    def add_card(self:Dealer, card:Tuple(int, int), index:int, stacks:List(List(Tuple(int, int))))->List(List(Tuple(int, int))):
-        """
-        adds card on top of the stack[index]
-        :param card: Tuple
-        :param stack: [Tuple...]
-        :return: [Tuple...]
-        """
-        new_stacks = deepcopy(stacks)
-        new_stacks[index].append(card)
-        return new_stacks
