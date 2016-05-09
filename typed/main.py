@@ -1,10 +1,10 @@
-from retic import Void,List
+from retic import Void,List,Int
 from benchmark_tools.Timer import Timer
 from player import Player
 from dealer import Dealer
 
 
-def generate_dealer(players:List(Player), cards_per_game:int)->Dealer:
+def generate_dealer(players:List(Player), cards_per_game:Int)->Dealer:
     """
     Instantiates the dealer which will take over the game
     :return: Dealer
@@ -12,7 +12,7 @@ def generate_dealer(players:List(Player), cards_per_game:int)->Dealer:
     points = [0 for i in range(len(players))]
     return Dealer(players, points, cards_per_game)
 
-def generate_players(num_players:int)->List(Player):
+def generate_players(num_players:Int)->List(Player):
     """
     instantiates n players with an empty list of cards
     :param num_players: int

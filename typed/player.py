@@ -1,10 +1,10 @@
-from retic import List,Tuple,Void,String
+from retic import List,Tuple,Void,String,Int
 
 class Player:
     """
     To represent a player in the game
     """
-    def __init__(self:Player, name:int, cards:List(Tuple(int,int)))->Void:
+    def __init__(self:Player, name:Int, cards:List(Tuple(Int,Int)))->Void:
         """
         :param name: Int
         :param cards: [Tuple...]
@@ -14,7 +14,7 @@ class Player:
         self.name = name
         self.cards = cards
 
-    def discard(self:Player)->int:
+    def discard(self:Player)->Int:
         """
         Return index of card to be discarded
         :return: Int
@@ -23,7 +23,7 @@ class Player:
         discarded_index = face_values.index(max(face_values))
         return discarded_index
 
-    def choose_correct_stack(self:Player, stacks:List(List(Tuple(int,int))))->int:
+    def choose_correct_stack(self:Player, stacks:List(List(Tuple(Int,Int))))->Int:
         """
         Returns the index of the correct stack
         :param stacks: [[Tuple ...]...]
@@ -45,7 +45,7 @@ class Player:
         else:
             return self.get_index_of_closest_stack(top_cards, discarded)
 
-    def get_index_of_closest_stack(self:Player, cards:List(Tuple(int,int)), card:Tuple(int,int))->int:
+    def get_index_of_closest_stack(self:Player, cards:List(Tuple(Int,Int)), card:Tuple(Int,Int))->Int:
         """
         gets index of stack closest to card in value
         :param cards: [Tuple ...]
