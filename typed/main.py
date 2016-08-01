@@ -2,8 +2,11 @@ from retic import Void,List,Int
 from benchmark_tools.Timer import Timer
 from player import Player
 from dealer import Dealer
+from benchmark_tools.Counter import counted, get_num_calls
+from inspect import getmembers, isfunction
 
 
+@counted
 def generate_dealer(players:List(Player), cards_per_game:Int)->Dealer:
     """
     Instantiates the dealer which will take over the game
@@ -12,6 +15,7 @@ def generate_dealer(players:List(Player), cards_per_game:Int)->Dealer:
     points = [0 for i in range(len(players))]
     return Dealer(players, points, cards_per_game)
 
+@counted
 def generate_players(num_players:Int)->List(Player):
     """
     instantiates n players with an empty list of cards
@@ -23,6 +27,7 @@ def generate_players(num_players:Int)->List(Player):
         players.append(Player(i, []))
     return players
 
+@counted
 def main()->Void:
 
     num = 3 #number of players
@@ -38,8 +43,11 @@ def main()->Void:
 
     players = generate_players(num)
     dealer = generate_dealer(players, cards_per_game)
-    print("scores: %s" % dealer.simulate_game())
+    dealer.simulate_game()
+
 t = Timer()
 with t:
+  for i in range(500):
     main()
+
 
